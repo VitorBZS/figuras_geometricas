@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:figuras_geometricas/views/login/login_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -29,15 +28,15 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF8F4FF),
 
       body: Stack(
         children: [
 
           // 🔹 Imagem principal (ícone splash)
           Center(
-            child: SvgPicture.asset(
-              "assets/Icon.svg",
+            child: Image.asset(
+              "assets/Icon.png",
               width: 180,
             ),
           ),
@@ -47,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
             top: 40,
             left: 20,
             child: Image.asset(
-              "assets/fatec-matao.jpg",
+              "assets/fatec-matao.png",
               width: 90,
             ),
           ),

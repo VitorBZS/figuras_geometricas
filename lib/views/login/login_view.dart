@@ -1,37 +1,42 @@
 import 'package:flutter/material.dart';
-
 import '../menu/menu_view.dart';
 
 class LoginView extends StatefulWidget {
-  const LoginView({super.key});
-
   @override
-  _LoginViewState createState() => _LoginViewState();
+  State<LoginView> createState() => _LoginViewState();
 }
 
 class _LoginViewState extends State<LoginView> {
+  final usuarioController = TextEditingController();
+  final senhaController = TextEditingController();
 
-  TextEditingController nomeController = TextEditingController();
-  TextEditingController senhaController = TextEditingController();
+  final String usuarioAdm = "admin";
+  final String senhaAdm = "123";
 
-  void fazerLogin() {
-    String nome = nomeController.text;
-    String senha = senhaController.text;
+  void entrar() {
+    String user = usuarioController.text;
+    String pass = senhaController.text;
 
-    if (nome.isNotEmpty && senha.isNotEmpty && senha.length >= 8) {
+    if (user == usuarioAdm && pass == senhaAdm) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MenuView()),
+        MaterialPageRoute(
+          builder: (_) => MenuView(),
+        ),
       );
-    }  
-    else if(nome.isEmpty && senha.isEmpty){
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Preencha todos os campos")),
-      );
-    }
-    else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Insira uma senha de 8 caracteres ou mais.")),
+    } else {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Erro"),
+          content: Text("Usuário ou senha inválidos."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("OK"),
+            )
+          ],
+        ),
       );
     }
   }
@@ -39,17 +44,18 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
+      appBar: AppBar(
+        title: Text("Login"),
+      ),
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            
+
             TextField(
-              controller: nomeController,
+              controller: usuarioController,
               decoration: InputDecoration(
-                labelText: "Nome",
+                labelText: "Usuário",
                 border: OutlineInputBorder(),
               ),
             ),
@@ -65,12 +71,12 @@ class _LoginViewState extends State<LoginView> {
               ),
             ),
 
-            SizedBox(height: 20),
+            SizedBox(height: 30),
 
             ElevatedButton(
-              onPressed: fazerLogin,
+              onPressed: entrar,
               child: Text("Entrar"),
-            )
+            ),
           ],
         ),
       ),
