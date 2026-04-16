@@ -18,25 +18,39 @@ class _TrapezioInputViewState extends State<TrapezioInputView> {
   final controller = TrapezioController();
 
   void calcular() {
-    double baseMaior = double.parse(baseMaiorController.text);
-    double baseMenor = double.parse(baseMenorController.text);
-    double altura = double.parse(alturaController.text);
-
-    var trapezio = controller.calcular(baseMaior, baseMenor, altura);
-
-    if(baseMaior <= baseMenor){
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("A base maior precisa ser maior do que a base menor."))
+    double? baseMaior = double.tryParse(baseMaiorController.text.replaceAll(",", "."),
+    );
+    double? baseMenor = double.tryParse(baseMenorController.text.replaceAll(",", "."),
+    );
+    double? altura = double.tryParse(alturaController.text.replaceAll(",", "."),
+    );
+    
+    if (baseMaior == null || baseMenor == null || altura == null) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Erro"),
+          content: Text("Digite números válidos."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("OK"),
+            ),
+          ],
+        ),
       );
-    }
-    else{
+    return;
+  }
+  else
+  {
+      var trapezio = controller.calcular(baseMaior, baseMenor, altura);
       Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => TrapezioResultView(trapezio: trapezio),
       ),
     );
-    }
+    } 
   }
 
   @override

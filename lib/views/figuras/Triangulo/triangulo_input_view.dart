@@ -17,17 +17,37 @@ class _TrianguloInputViewState extends State<TrianguloInputView> {
   final controller = TrianguloController();
 
   void calcular() {
-    double base = double.parse(baseController.text);
-    double altura = double.parse(alturaController.text);
-
-    var triangulo = controller.calcular(base, altura);
-
-    Navigator.push(
+    double? base = double.tryParse(baseController.text.replaceAll(",", "."),
+    );
+    double? altura = double.tryParse(alturaController.text.replaceAll(",", "."),
+    );
+    
+    if (base == null || altura == null) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Erro"),
+          content: Text("Digite números válidos."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    return;
+  }
+  else
+  {
+      var triangulo = controller.calcular(base, altura);
+      Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => TrianguloResultView(triangulo: triangulo),
       ),
     );
+    } 
   }
 
   @override

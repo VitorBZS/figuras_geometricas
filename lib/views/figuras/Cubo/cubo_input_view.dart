@@ -15,17 +15,36 @@ class _CuboInputViewState extends State<CuboInputView> {
 
   final controller = CuboController();
 
-  void calcular() {
-    double arestas = double.parse(arestasController.text);
-
-    var cubo = controller.calcular(arestas);
-
-    Navigator.push(
+void calcular() {
+    double? arestas = double.tryParse(arestasController.text.replaceAll(",", "."),
+    );
+    
+    if (arestas == null) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Erro"),
+          content: Text("Digite um número válido."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    return;
+  }
+  else
+  {
+      var cubo = controller.calcular(arestas);
+      Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => CuboResultView(cubo: cubo),
       ),
     );
+    } 
   }
 
   @override

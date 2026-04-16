@@ -16,16 +16,35 @@ class _HexagonoInputViewState extends State<HexagonoInputView> {
   final controller = HexagonoController();
 
   void calcular() {
-    double lado = double.parse(ladoController.text);
-
-    var hexagono = controller.calcular(lado);
-
-    Navigator.push(
+    double? lado = double.tryParse(ladoController.text.replaceAll(",", "."),
+    );
+    
+    if (lado == null) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Erro"),
+          content: Text("Digite um número válido."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    return;
+  }
+  else
+  {
+      var hexagono = controller.calcular(lado);
+      Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => HexagonoResultView(hexagono: hexagono),
       ),
     );
+    } 
   }
 
   @override

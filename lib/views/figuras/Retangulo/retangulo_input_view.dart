@@ -16,7 +16,7 @@ class _RetanguloInputViewState extends State<RetanguloInputView> {
 
   final controller = RetanguloController();
 
-  void calcular() {
+  /*void calcular() {
     double base = double.parse(baseController.text);
     double altura = double.parse(alturaController.text);
 
@@ -35,6 +35,56 @@ class _RetanguloInputViewState extends State<RetanguloInputView> {
       ),
     );
     }
+  }*/
+
+  void calcular() {
+    double? base = double.tryParse(baseController.text.replaceAll(",", "."),
+    );
+    double? altura = double.tryParse(alturaController.text.replaceAll(",", "."),
+    );
+    
+    if (base == null || altura == null) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Erro"),
+          content: Text("Digite números válidos."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    return;
+  }
+  if (base == altura) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Erro"),
+          content: Text("Digite valores diferentes."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    return;
+  }
+  else
+  {
+      var retangulo = controller.calcular(base, altura);
+      Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RetanguloResultView(retangulo: retangulo),
+      ),
+    );
+    } 
   }
 
   @override
