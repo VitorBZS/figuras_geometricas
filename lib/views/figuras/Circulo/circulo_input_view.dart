@@ -11,21 +11,40 @@ class CirculoInputView extends StatefulWidget {
 
 class _CirculoInputViewState extends State<CirculoInputView> {
 
-  TextEditingController raioController = TextEditingController();
+  TextEditingController diametroController = TextEditingController();
 
   final controller = CirculoController();
 
   void calcular() {
-    double raio = double.parse(raioController.text);
-
-    var circulo = controller.calcular(raio);
-
-    Navigator.push(
+    double? diametro = double.tryParse(diametroController.text.replaceAll(",", "."),
+    );
+    
+    if (diametro == null) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Erro"),
+          content: Text("Digite um número válido."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    return;
+  }
+  else
+  {
+      var circulo = controller.calcular(diametro);
+      Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => CirculoResultView(circulo: circulo),
       ),
     );
+    } 
   }
 
   @override
@@ -38,7 +57,7 @@ class _CirculoInputViewState extends State<CirculoInputView> {
           children: [
 
             TextField(
-              controller: raioController,
+              controller: diametroController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 labelText: "Diâmetro",

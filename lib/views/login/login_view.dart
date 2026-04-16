@@ -50,6 +50,7 @@ class _LoginViewState extends State<LoginView> {
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
 
             TextField(
@@ -57,6 +58,7 @@ class _LoginViewState extends State<LoginView> {
               decoration: InputDecoration(
                 labelText: "Usuário",
                 border: OutlineInputBorder(),
+                
               ),
             ),
 

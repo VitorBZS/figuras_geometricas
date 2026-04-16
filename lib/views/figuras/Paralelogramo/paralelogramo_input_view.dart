@@ -15,19 +15,39 @@ class _ParalelogramoInputViewState extends State<ParalelogramoInputView> {
   TextEditingController alturaController = TextEditingController();
 
   final controller = ParalelogramoController();
-
+  
   void calcular() {
-    double base = double.parse(baseController.text);
-    double altura = double.parse(alturaController.text);
-
-    var paralelogramo = controller.calcular(base, altura);
-
-    Navigator.push(
+    double? base = double.tryParse(baseController.text.replaceAll(",", "."),
+    );
+    double? altura = double.tryParse(alturaController.text.replaceAll(",", "."),
+    );
+    
+    if (base == null || altura == null) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Erro"),
+          content: Text("Digite números válidos."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    return;
+  }
+  else
+  {
+      var paralelogramo = controller.calcular(base, altura);
+      Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ParalelogramoResultView(paralelogramo: paralelogramo),
       ),
     );
+    } 
   }
 
   @override

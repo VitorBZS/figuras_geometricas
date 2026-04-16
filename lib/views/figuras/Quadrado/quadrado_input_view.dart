@@ -16,17 +16,37 @@ class _QuadradoInputViewState extends State<QuadradoInputView> {
   final controller = QuadradoController();
 
   void calcular() {
-    double lado = double.parse(ladoController.text);
-
-    var quadrado = controller.calcular(lado);
-
-    Navigator.push(
+    double? lado = double.tryParse(ladoController.text.replaceAll(",", "."),
+    );
+    
+    if (lado == null) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Erro"),
+          content: Text("Digite um número válido."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    return;
+  }
+  else
+  {
+      var quadrado = controller.calcular(lado);
+      Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => QuadradoResultView(quadrado: quadrado),
       ),
     );
+    } 
   }
+
 
   @override
   Widget build(BuildContext context) {

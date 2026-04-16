@@ -16,16 +16,35 @@ class _EsferaInputViewState extends State<EsferaInputView> {
   final controller = EsferaController();
 
   void calcular() {
-    double diametro = double.parse(diametroController.text);
-
-    var esfera = controller.calcular(diametro);
-
-    Navigator.push(
+    double? diametro = double.tryParse(diametroController.text.replaceAll(",", "."),
+    );
+    
+    if (diametro == null) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Erro"),
+          content: Text("Digite um número válido."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    return;
+  }
+  else
+  {
+      var esfera = controller.calcular(diametro);
+      Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => EsferaResultView(esfera: esfera),
       ),
     );
+    } 
   }
 
   @override

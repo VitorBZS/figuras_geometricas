@@ -17,17 +17,37 @@ class _LosangoInputViewState extends State<LosangoInputView> {
   final controller = LosangoController();
 
   void calcular() {
-    double dMaior = double.parse(diagonalMaiorController.text);
-    double dMenor = double.parse(diagonalMenorController.text);
-
-    var losango = controller.calcular(dMaior, dMenor);
-
-    Navigator.push(
+    double? dMaior = double.tryParse(diagonalMaiorController.text.replaceAll(",", "."),
+    );
+    double? dMenor = double.tryParse(diagonalMenorController.text.replaceAll(",", "."),
+    );
+    
+    if (dMaior == null || dMenor == null) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Erro"),
+          content: Text("Digite números válidos."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    return;
+  }
+  else
+  {
+      var losango = controller.calcular(dMaior, dMenor);
+      Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => LosangoResultView(losango: losango),
       ),
     );
+    } 
   }
 
   @override
